@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Tangy_DataAccess
+namespace Tangy_Models
 {
     public class OrderHeaderDTO
     {
@@ -46,6 +46,9 @@ namespace Tangy_DataAccess
         [Required]
         [Display(Name = "Postal Code")]
         public string PostalCode { get; set; }
+        [Display(Name = "Email")]
+        [Required]
+        public string Email { get; set; }
 
     }
 }
