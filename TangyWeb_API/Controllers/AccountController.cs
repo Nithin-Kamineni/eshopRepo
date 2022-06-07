@@ -1,6 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using Tangy_Common;
+using Tangy_DataAccess;
+using Tangy_Models;
+using TangyWeb_API.Helper;
 
 namespace TangyWeb_API.Controllers
 {
@@ -8,22 +13,98 @@ namespace TangyWeb_API.Controllers
     [ApiController]
     public class AccountController : Controller
     {
-        private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly APISettings _aPISettings;
 
         public AccountController(
-            UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager,
-            RoleManager<IdentityRole> roleManager)
+            UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager,
+            RoleManager<IdentityRole> roleManager,
+            IOptions<APISettings> options)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _roleManager=roleManager;
+            _aPISettings= options.Value;
         }
-        public IActionResult Index()
+
+        [HttpPost]
+        public async Task<IActionResult> SignUp([FromBody] SignUpRequestDTO signUpRequestDTO)
         {
-            return View();
+            if(signUpRequestDTO==null || !ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
+            var user = new ApplicationUser
+            {
+                UserName = signUpRequestDTO.Email,
+                Email = signUpRequestDTO.Email,
+                Name = signUpRequestDTO.Name,
+                PhoneNumber = signUpRequestDTO.PhoneNumber,
+                EmailConfirmed = true
+            };
+
+            var result = await _userManager.CreateAsync(user,signUpRequestDTO.Password);
+
+            if (!result.Succeeded)
+            {
+                return BadRequest(new SignUpResponseDTO()
+                {
+                    IsRegisterationSuccessful=false,
+                    Errors= result.Errors.Select(u => u.Description)
+                });
+            }
+
+            var roleResult = await _userManager.AddToRoleAsync(user, SD.Role_Customer);
+            if (!roleResult.Succeeded)
+            {
+                return BadRequest(new SignUpResponseDTO()
+                {
+                    IsRegisterationSuccessful=false,
+                    Errors= result.Errors.Select(u => u.Description)
+                });
+            }
+            return StatusCode(201);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SignIn([FromBody] SignInRequestDTO signInRequestDTO)
+        {
+            if (signInRequestDTO==null || !ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
+            var result = await _signInManager.PasswordSignInAsync(signInRequestDTO.UserName,signInRequestDTO.Password,false,false);
+            if (result.Succeeded)
+            {
+                var user = await _userManager.FindByNameAsync(signInRequestDTO.UserName);
+                if (user==null)
+                {
+                    return Unauthorized(new SignInResponseDTO
+                    {
+                        IsAuthSuccessful = false,
+                        ErrorMessage = "Invalid Authentication"
+                    });
+                }
+
+                //everything is valid and we need to login 
+                
+
+            }
+            else
+            {
+                return Unauthorized(new SignInResponseDTO
+                {
+                    IsAuthSuccessful = false,
+                    ErrorMessage = "Invalid Authentication"
+                });
+            }
+           
+            return StatusCode(201);
         }
     }
 }
