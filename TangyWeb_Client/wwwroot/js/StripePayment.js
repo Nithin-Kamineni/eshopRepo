@@ -1,4 +1,4 @@
 ﻿redirectToCheckout = function (sessionId) {
-    var stripe = Stripe("pk_test_51JcFLuLzMgCIgSRrMw19EzJALAjYC6j5mooETO1VrDWRziVUKPLyBS5nY4siaaxnTgxWg69QZIQNpUBl06WECbzB00gG4hqVX5");
+    var stripe = Stripe("pk_test_51NXVWqJ4eTuMqTYnNLTKlYgMqaAYYMcNY4wvJC2BQLC5wQcBcvVMGBrze0oDOoQ1oN9OUBJolJ5Pbp0Isp4XnTNC00BRg94Xur");
     stripe.redirectToCheckout({ sessionId: sessionId });
 }

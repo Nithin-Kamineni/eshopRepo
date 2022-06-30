@@ -41,12 +41,12 @@ namespace TangyWeb_Server.Service
 
                 IdentityUser user = new()
                 {
-                    UserName="bhrugen@dotnetmastery.com",
-                    Email="bhrugen@dotnetmastery.com",
+                    UserName="vamsiraju835@gmail.com",
+                    Email="vamsiraju835@gmail.com",
                     EmailConfirmed=true
                 };
 
-                _userManager.CreateAsync(user, "Admin123*").GetAwaiter().GetResult();
+                _userManager.CreateAsync(user, "Admin@123").GetAwaiter().GetResult();
 
                 _userManager.AddToRoleAsync(user, SD.Role_Admin).GetAwaiter().GetResult();
 
