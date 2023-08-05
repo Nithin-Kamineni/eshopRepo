@@ -57,3 +57,11 @@ To install eShop on your system, follow these steps:
 Explore the eShop API documentation using Swagger:
 
 - [Swagger API Documentation](eshopapis.azurewebsites.net)
+
+<img width="1917" alt="eshop" src="https://github.com/Nithin-Kamineni/eshopRepo/assets/45392510/fd7f36c1-ed9b-4e09-b856-c2e3f2cb2381">
+
+<img width="1920" alt="eshop2" src="https://github.com/Nithin-Kamineni/eshopRepo/assets/45392510/d1df1f99-c2f2-4bbb-9377-b28faed3d9d9">
+
+<img width="1909" alt="eshop3" src="https://github.com/Nithin-Kamineni/eshopRepo/assets/45392510/86073f2f-a12b-43ed-a207-873884537cdb">
+
+<img width="1903" alt="eshop4" src="https://github.com/Nithin-Kamineni/eshopRepo/assets/45392510/9c6a4f4c-1da8-4669-9478-5457fc33b9dc">
